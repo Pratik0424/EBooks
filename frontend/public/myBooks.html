@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>E-Books</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Manage Purchased Books</h2>
+        <!-- <button onclick="toggleDarkMode()">Toggle Dark Mode</button> -->
+
+        <form id="purchaseForm" class="mb-4">
+            <div class="mb-3">
+                <label for="buyername" class="form-label">Buyer's Name</label>
+                <input type="text" id="buyername" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="bookname" class="form-label">Book's Name</label>
+                <input type="text" id="bookname" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="bookcost" class="form-label" >Book Cost ($)</label>
+                <input type="number" id="bookcost" class="form-control" required="nu">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Purchase</button>
+        </form>
+
+        <h3>Purchased Courses</h3>
+        <table class="table table-bordered" id="purchasesTable">
+            <thead>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Buyer's Name</th>
+                    <th>Book Cost</th>
+                    <th>Type of Books</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-theme");
+        }
+    
+        async function fetchPurchases() {
+            const response = await fetch('http://localhost:3000/getpurchases');
+            const purchases = await response.json();
+            renderPurchases(purchases);
+        }
+    
+        function renderPurchases(purchases) {
+            const purchasesTable = document.getElementById("purchasesTable").getElementsByTagName("tbody")[0];
+            purchasesTable.innerHTML = "";
+    
+            purchases.forEach((purchase, index) => {
+                const row = purchasesTable.insertRow();
+                row.innerHTML = `
+                    <td>${purchase.bookname}</td>
+                    <td>${purchase.buyername}</td>
+                    <td>${purchase.bookcost}</td>
+                    <td>
+                        <button onclick="editPurchase(${purchase.id})" class="btn btn-warning btn-sm">Edit</button>
+                        <button onclick="deletePurchase(${purchase.id})" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                `;
+            });
+        }
+    
+        document.getElementById("purchaseForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+    
+            const bookname = document.getElementById("bookname").value;
+            const buyername = document.getElementById("buyername").value;
+            const bookcost = document.getElementById("bookcost").value;
+    
+            const response = await fetch('http://localhost:3000/addpurchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ bookname, buyername, bookcost })
+            });
+    
+            if (response.ok) {
+                fetchPurchases();
+                event.target.reset();
+            }
+        });
+    
+        async function editPurchase(id) {
+            const response = await fetch(`http://localhost:3000/getpurchases`);
+            const purchases = await response.json();
+            const purchase = purchases.find(p => p.id === id);
+    
+            document.getElementById("bookname").value = purchase.bookname;
+            document.getElementById("buyername").value = purchase.buyername;
+            document.getElementById("bookcost").value = purchase.bookcost;
+    
+            await deletePurchase(id);
+        }
+    
+        async function deletePurchase(id) {
+            await fetch(`http://localhost:3000/deletepurchase/${id}`, {
+                method: 'DELETE'
+            });
+            fetchPurchases();
+        }
+    
+        fetchPurchases();
+    </script>
+    
+
+    <!-- <script>
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-theme");
+        }
+
+        let purchases = [];
+
+        function renderPurchases() {
+            const purchasesTable = document.getElementById("purchasesTable").getElementsByTagName("tbody")[0];
+            purchasesTable.innerHTML = "";
+
+            purchases.forEach((purchase, index) => {
+                const row = purchasesTable.insertRow();
+                row.innerHTML = `
+                    <td>${purchase.bookname}</td>
+                    <td>${purchase.buyername}</td>
+                    <td>${purchase.bookcost}</td>
+                    <td>
+                        <button onclick="editPurchase(${index})" class="btn btn-warning btn-sm">Edit</button>
+                        <button onclick="deletePurchase(${index})" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                `;
+            });
+        }
+
+        document.getElementById("purchaseForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const bookname= document.getElementById("bookname").value;
+            const buyername = document.getElementById("buyername").value;
+            const bookcost = document.getElementById("bookcost").value;
+
+            purchases.push({ bookname, buyername, bookcost });
+            renderPurchases();
+            event.target.reset();
+        });
+
+        function editPurchase(index) {
+            const purchase = purchases[index];
+            document.getElementById("bookname").value = purchase.bookname;
+            document.getElementById("buyername").value = purchase.buyername;
+            document.getElementById("bookcost").value = purchase.bookcost;
+
+            deletePurchase(index);
+        }
+
+        function deletePurchase(index) {
+            purchases.splice(index, 1);
+            renderPurchases();
+        }
+
+        renderPurchases();
+    </script> -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/boots
+
+
+
+
+    
