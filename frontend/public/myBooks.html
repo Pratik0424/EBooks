@@ -119,61 +119,6 @@
     </script>
     
 
-    <!-- <script>
-
-        function toggleDarkMode() {
-            document.body.classList.toggle("dark-theme");
-        }
-
-        let purchases = [];
-
-        function renderPurchases() {
-            const purchasesTable = document.getElementById("purchasesTable").getElementsByTagName("tbody")[0];
-            purchasesTable.innerHTML = "";
-
-            purchases.forEach((purchase, index) => {
-                const row = purchasesTable.insertRow();
-                row.innerHTML = `
-                    <td>${purchase.bookname}</td>
-                    <td>${purchase.buyername}</td>
-                    <td>${purchase.bookcost}</td>
-                    <td>
-                        <button onclick="editPurchase(${index})" class="btn btn-warning btn-sm">Edit</button>
-                        <button onclick="deletePurchase(${index})" class="btn btn-danger btn-sm">Delete</button>
-                    </td>
-                `;
-            });
-        }
-
-        document.getElementById("purchaseForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const bookname= document.getElementById("bookname").value;
-            const buyername = document.getElementById("buyername").value;
-            const bookcost = document.getElementById("bookcost").value;
-
-            purchases.push({ bookname, buyername, bookcost });
-            renderPurchases();
-            event.target.reset();
-        });
-
-        function editPurchase(index) {
-            const purchase = purchases[index];
-            document.getElementById("bookname").value = purchase.bookname;
-            document.getElementById("buyername").value = purchase.buyername;
-            document.getElementById("bookcost").value = purchase.bookcost;
-
-            deletePurchase(index);
-        }
-
-        function deletePurchase(index) {
-            purchases.splice(index, 1);
-            renderPurchases();
-        }
-
-        renderPurchases();
-    </script> -->
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/boots
 
