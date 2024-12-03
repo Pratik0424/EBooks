@@ -11,9 +11,9 @@ const port = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-app.use(bodyParser.json()); //Parses incoming request bodies in JSON format.
+app.use(bodyParser.json()); 
 
-// Serve static files from the "public" directory
+
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
